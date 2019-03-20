@@ -30,6 +30,23 @@ server.get("/api/cohorts/:id", async (req, res) => {
     res.status(500).json(error);
   }
 });
+server.get("/api/cohorts/:id/students", async (req, res) => {
+  try {
+    const cohort = await db("cohorts")
+      .where({ id: req.params.id })
+      .first();
+      const student = await db("students")
+        .where({cohort_id: req.body.cohort_id})
+    
+    if (cohort = student){
+        res.status(200).json(student)
+    }else{
+        res.status(400).json({message:'no students found'})
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 const errors = {
   "19": "Another record with that value exists"
