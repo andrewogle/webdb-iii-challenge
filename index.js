@@ -32,17 +32,10 @@ server.get("/api/cohorts/:id", async (req, res) => {
 });
 server.get("/api/cohorts/:id/students", async (req, res) => {
   try {
-    const cohort = await db("cohorts")
-      .where({ id: req.params.id })
-      .first();
-      const student = await db("students")
-        .where({cohort_id: req.body.cohort_id})
-    
-    if (cohort = student){
-        res.status(200).json(student)
-    }else{
-        res.status(400).json({message:'no students found'})
-    }
+    const cohort = await db("cohorts as c")
+      .join('students as s', 's.cohort_id','c.id')
+      .where('s.cohort_id',{ id: req.params.id })
+     
   } catch (error) {
     res.status(500).json(error);
   }
