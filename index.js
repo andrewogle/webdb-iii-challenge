@@ -35,6 +35,8 @@ server.get("/api/cohorts/:id/students", async (req, res) => {
     const cohort = await db("cohorts as c")
       .join('students as s', 's.cohort_id','c.id')
       .where('s.cohort_id',{ id: req.params.id })
+
+      res.status(200).json(cohort)
      
   } catch (error) {
     res.status(500).json(error);
